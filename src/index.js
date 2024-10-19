@@ -6,12 +6,14 @@ const PORT = 8080;
 
 const ask = require("./routes/ask");
 const upload = require("./routes/upload");
+const search = require("./routes/search");
 
 app.use(cors());
 app.use(express.json());
 
 app.use("/upload", upload);
 app.use("/ask", ask);
+app.use("/search", search);
 
 app.use((req, res) => {
   res.status(404).send(`
