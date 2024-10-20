@@ -1,123 +1,38 @@
-// const app = require("express").Router();
-// const multer = require("multer");
-// const axios = require("axios");
-// const fs = require("fs");
+// const memory = [];
 
-// const YOUR_API_KEY = process.env.OPENAI_API_KEY;
+// // Xotira saqlash funksiyasi
+// function updateMemory(newMessages) {
+//   memory.push(...newMessages);
+// }
 
-// const upload = multer({ dest: "uploads/" });
+// // Chat so‘roviga xotira qo'shish
+// app.post("/chat", async (req, res) => {
+//   const { userMessage } = req.body;
 
-// app.post("/", upload.single("file"), async (req, res) => {
-//   const { question } = req.body;
-//   const filePath = req.file.path;
-
-//   const fileContent = fs.readFileSync(filePath, "utf-8");
-
-//   try {
-//     const chatGPTResponse = await axios.post(
-//       "https://api.openai.com/v1/chat/completions",
-//       {
-//         model: "gpt-4",
-//         messages: [
-//           { role: "system", content: "You are analyzing a file." },
-//           {
-//             role: "user",
-//             content: `Here is the file content: ${fileContent}. Question: ${question}`,
-//           },
-//         ],
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${YOUR_API_KEY}`,
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-
-//     const gptAnswer = chatGPTResponse.data.choices[0].message.content;
-//     res.json({ response: gptAnswer });
-//   } catch (error) {
-//     console.log(error.response.data);
-
-//     res.status(500).json({ error: "Error analyzing the file with ChatGPT" });
-//   }
-// });
-
-// module.exports = app;
-// -----------
-// const app = require("express").Router();
-// const multer = require("multer");
-// const axios = require("axios");
-// const fs = require("fs");
-
-// const YOUR_API_KEY = process.env.OPENAI_API_KEY;
-
-// const upload = multer({ dest: "uploads/" });
-// const path = require("path");
-// const mammoth = require("mammoth");
-// const pdf = require("pdf-parse");
-// const xlsx = require("xlsx"); // Excel fayllarini o'qish uchun kutubxona
-
-// app.post("/", upload.single("file"), async (req, res) => {
-//   const { question } = req.body;
-//   const filePath = req.file.path;
-//   const fileExt = path.extname(req.file.originalname).toLowerCase();
+//   // Xotiradagi ma'lumotlarni qo'shish
+//   const messages = [
+//     { role: "system", content: "You are a helpful assistant." },
+//     ...memory,
+//     { role: "user", content: userMessage },
+//   ];
 
 //   try {
-//     let fileContent;
+//     const response = await openai.createChatCompletion({
+//       model: "gpt-4-turbo",
+//       messages: messages,
+//       max_tokens: 2000,
+//     });
 
-//     // Fayl turini tekshirib, tahlil qilish
-//     if (fileExt === ".txt") {
-//       fileContent = fs.readFileSync(filePath, "utf-8");
-//     } else if (fileExt === ".pdf") {
-//       const dataBuffer = fs.readFileSync(filePath);
-//       const pdfData = await pdf(dataBuffer);
-//       fileContent = pdfData.text;
-//     } else if (fileExt === ".docx") {
-//       const dataBuffer = fs.readFileSync(filePath);
-//       const wordData = await mammoth.extractRawText({ buffer: dataBuffer });
-//       fileContent = wordData.value;
-//     } else if (fileExt === ".xlsx") {
-//       // Excel faylini o'qish
-//       const workbook = xlsx.readFile(filePath);
-//       const sheetName = workbook.SheetNames[0]; // Birinchi varaqqa e'tibor qaratamiz
-//       const worksheet = workbook.Sheets[sheetName];
-//       fileContent = xlsx.utils.sheet_to_json(worksheet, { header: 1 }); // Excelni JSON ga aylantirish
-//     } else {
-//       return res
-//         .status(400)
-//         .json({ error: "Fayl turi qo‘llab-quvvatlanmaydi." });
-//     }
+//     // Yangi javobni xotiraga qo'shish
+//     updateMemory([
+//       { role: "assistant", content: response.data.choices[0].message.content },
+//     ]);
 
-//     // Fayl kontenti va savolni ChatGPT ga yuborish
-//     const chatGPTResponse = await axios.post(
-//       "https://api.openai.com/v1/chat/completions",
-//       {
-//         model: "gpt-4",
-//         messages: [
-//           { role: "system", content: "You are analyzing a file." },
-//           {
-//             role: "user",
-//             content: `Here is the file content: ${fileContent}. Question: ${question}`,
-//           },
-//         ],
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${YOUR_API_KEY}`,
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-
-//     const gptAnswer = chatGPTResponse.data.choices[0].message.content;
-//     res.json({ response: gptAnswer });
+//     res.json({ success: true, response: response.data });
 //   } catch (error) {
-//     res.status(500).json({ error: "Faylni tahlil qilishda xatolik yuz berdi" });
+//     res.status(500).json({ success: false, message: error.message });
 //   }
 // });
-
-// module.exports = app;
 
 const app = require("express").Router();
 const multer = require("multer");
