@@ -5,15 +5,15 @@ const cors = require("cors");
 const PORT = 8080;
 
 const ask = require("./routes/ask");
-const upload = require("./routes/upload");
 const search = require("./routes/search");
+const analyze = require("./routes/analyze");
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/upload", upload);
 app.use("/ask", ask);
 app.use("/search", search);
+app.use("/analyze", analyze);
 
 app.use((req, res) => {
   res.status(404).send(`

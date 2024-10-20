@@ -1,49 +1,71 @@
-# qo'llanma
+# Руководство
 
-### dasturni ishga tushirish
+### Установка зависимостей
+
+Для установки необходимых модулей выполните команду:
+
+```
+npm install
+```
+
+### Запуск программы
 
 ```
 npm start
 ```
 
-## Endpoints
+### Сервер доступен по адресу
 
 ```
-   1. /uploads
-   2. /ask
+http://localhost:8080
 ```
 
-## upload file
+## Эндпоинты
 
 ```
-   request => [POST] /uploads
-
-    {
-        file:'your file'
-    }
-
-
-    response =>
-    {
-        success:true || false
-        fileId:filesidffwfwwfe
-    }
+1. /upload
+2. /ask
+3. /search
 ```
 
-## send question
+## Загрузка файла
 
 ```
-   request => [POST] /ask
+Запрос => [POST] /upload
 
-    {
-        fileID:"fondh39uj3hdnkwlw",
-        question:"your question"
-    }
+{
+    file: 'ваш файл'
+}
 
-
-    response =>
-    {
-        success:true || false
-        response:filesidffwfwwfe
-    }
+Ответ =>
+{
+    success: true || false,
+    fileId: 'filesidffwfwwfe'
+}
 ```
+
+## Отправка вопроса
+
+```
+Запрос => [POST] /ask
+
+{
+    fileID: "fondh39uj3hdnkwlw",
+    question: "ваш вопрос"
+}
+
+Ответ =>
+{
+    success: true || false,
+    response: 'filesidffwfwwfe'
+}
+```
+
+## Переменные окружения (.env)
+
+```
+OPENAI_API_KEY =
+SERPAPI_API_KEY =
+```
+
+Если у вас есть дополнительные вопросы или изменения, не стесняйтесь спрашивать!
