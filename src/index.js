@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const PORT = 8080;
+const PORT = 5050;
 
 const search = require("./routes/search");
 const analyze = require("./routes/analyze");
@@ -12,6 +12,7 @@ app.use(express.json());
 
 app.use("/search", search);
 app.use("/analyze", analyze);
+app.get("/", (req, res) => res.status(200).json({ message: "Привет!" }));
 
 app.use((req, res) => {
   res.status(404).send(`
@@ -19,7 +20,5 @@ app.use((req, res) => {
     <p>Страница, которую вы ищете, не существует.</p>
   `);
 });
-
-app.get("/", (req, res) => res.status(200).json({ message: "Привет!" }));
 
 app.listen(PORT, () => console.log("http://localhost:" + PORT));
