@@ -1,39 +1,3 @@
-// const memory = [];
-
-// // Xotira saqlash funksiyasi
-// function updateMemory(newMessages) {
-//   memory.push(...newMessages);
-// }
-
-// // Chat so‘roviga xotira qo'shish
-// app.post("/chat", async (req, res) => {
-//   const { userMessage } = req.body;
-
-//   // Xotiradagi ma'lumotlarni qo'shish
-//   const messages = [
-//     { role: "system", content: "You are a helpful assistant." },
-//     ...memory,
-//     { role: "user", content: userMessage },
-//   ];
-
-//   try {
-//     const response = await openai.createChatCompletion({
-//       model: "gpt-4-turbo",
-//       messages: messages,
-//       max_tokens: 2000,
-//     });
-
-//     // Yangi javobni xotiraga qo'shish
-//     updateMemory([
-//       { role: "assistant", content: response.data.choices[0].message.content },
-//     ]);
-
-//     res.json({ success: true, response: response.data });
-//   } catch (error) {
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// });
-
 const app = require("express").Router();
 const multer = require("multer");
 const axios = require("axios");
@@ -73,9 +37,7 @@ app.post("/", upload.single("file"), async (req, res) => {
       const worksheet = workbook.Sheets[sheetName];
       fileContent = xlsx.utils.sheet_to_json(worksheet, { header: 1 }); // Excelni JSON ga aylantirish
     } else {
-      return res
-        .status(400)
-        .json({ error: "Fayl turi qo‘llab-quvvatlanmaydi." });
+      return res.status(400).json({ error: "Тип файла не поддерживается.." });
     }
 
     // Fayldagi ma'lumotlarni qatorlarga ajratish
@@ -109,9 +71,7 @@ app.post("/", upload.single("file"), async (req, res) => {
     const gptAnswer = chatGPTResponse.data.choices[0].message.content;
     res.json({ response: gptAnswer });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Faylni tahlil qilishda xatolik yuz berdi." });
+    res.status(500).json({ error: "Произошла ошибка при анализе файла." });
   }
 });
 

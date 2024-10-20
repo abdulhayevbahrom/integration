@@ -6,13 +6,12 @@ router.get("/", async (req, res) => {
   try {
     const query = req.query.q;
 
-    if (!query) {
-      return res.status(400).json({ error: "Qidiruv so`rovini kiriting!" });
-    }
+    if (!query)
+      return res.status(400).json({ error: "Введите поисковой запрос!" });
 
     const params = {
       q: query,
-      location: "Uzbekistan",
+      location: "Belarus",
       engine: "google",
       api_key: API_KEY,
     };
@@ -21,9 +20,7 @@ router.get("/", async (req, res) => {
     res.status(200).json(result);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ error: "Xato yuz berdi, keyinroq qayta urinib ko‘ring!" });
+    res.status(500).json({ error: "Произошла ошибка, попробуйте позже!" });
   }
 });
 
